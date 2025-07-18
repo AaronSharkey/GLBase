@@ -1,32 +1,38 @@
-# Prerequisites
-*.d
+# macOS system files
+.DS_Store
 
-# Compiled Object files
-*.slo
-*.lo
+# CLion/JetBrains IDE files
+.idea/
+cmake-build-*/
+cmake-build-debug/
+cmake-build-release/
+*.iml
+
+# CMake files
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+build/
+compile_commands.json
+
+# Executables and object files
 *.o
 *.obj
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
 *.so
-*.dylib
 *.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
+*.exe
+*.out
 *.a
 *.lib
 
-# Executables
-*.exe
-*.out
-*.app
+# Logs and temporary files
+*.log
+*.tmp
+
+# User-specific files
+*.swp
+*.swo
+
+# Ignore shader binaries (if any)
+*.spv
