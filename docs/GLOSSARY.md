@@ -143,3 +143,69 @@ private:
 
 - Indent code blocks to visually group OpenGL resource operations (e.g., VAO, VBO, EBO).
 - Enhances clarity but does not affect program behavior.
+
+## Most Vexing Parse
+
+- In C++, a declaration like `Window basicWindow();` is interpreted as a function declaration, not as an object definition.
+- This is known as the "most vexing parse."
+- To define an object, omit the parentheses: `Window basicWindow;`
+- If the constructor takes arguments, use: `Window basicWindow(arg1, arg2);`
+- Avoid empty parentheses when declaring objects to prevent this ambiguity.
+
+## [[nodiscard]]
+
+- A C++ attribute that instructs the compiler to warn if the return value of a function is ignored.
+- Helps prevent bugs by ensuring important results (such as error codes or status flags) are not accidentally discarded.
+- Commonly used for functions where ignoring the result could lead to incorrect program behavior.
+
+**Example:**
+```cpp
+[[nodiscard]] bool getShouldClose() const;
+```
+
+## Virtual Destructors
+
+- Virtual destructors ensure proper cleanup when deleting objects through base class pointers.
+- When a base class has virtual functions, its destructor should also be virtual to enable correct polymorphic destruction.
+- `virtual ~ClassName() = default;` tells the compiler to generate the standard destructor behavior while maintaining virtual behavior.
+- Without virtual destructors, only the base class destructor is called, potentially causing resource leaks in derived classes.
+
+**Example:**
+```cpp
+class Base {
+public:
+    virtual ~Base() = default;  // Ensures proper cleanup chain
+};
+
+class Derived : public Base {
+    ~Derived() override { /* cleanup derived resources */ }
+};
+
+Base* obj = new Derived();
+delete obj;  // Calls ~Derived() then ~Base() correctly
+```
+
+## Pure Virtual Functions
+
+- Pure virtual functions are declared with `= 0` and have no implementation in the base class.
+- Classes containing pure virtual functions become abstract and cannot be instantiated directly.
+- Derived classes must provide implementations for all pure virtual functions to become concrete (instantiable).
+- Used to define interfaces and enforce implementation requirements in inheritance hierarchies.
+
+**Example:**
+```cpp
+class Shape {
+public:
+    virtual void draw() = 0;        // Pure virtual - must be implemented
+    virtual double area() = 0;      // Pure virtual - must be implemented
+    virtual ~Shape() = default;     // Virtual destructor
+};
+
+// Shape s;  // ERROR: Cannot instantiate abstract class
+
+class Circle : public Shape {
+public:
+    void draw() override { /* implementation required */ }
+    double area() override { /* implementation required */ }
+};
+```
