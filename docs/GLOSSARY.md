@@ -209,3 +209,73 @@ public:
     double area() override { /* implementation required */ }
 };
 ```
+
+## References vs Pointers
+
+- References (`Type&`) are aliases to existing objects and cannot be null or reassigned.
+- Pointers (`Type*`) store memory addresses and can be null, reassigned, or point to different objects.
+- References provide cleaner syntax and are safer for function parameters when you don't need null values.
+- Use `const Type&` for read-only access to avoid copying large objects.
+
+**Example:**
+```cpp
+void function(const Config& config);     // Reference - no null, no copy
+void function(const Config* config);     // Pointer - can be null, need & when calling
+```
+
+## Brace Initialization (`{}`) vs Direct Initialization (`()`)
+
+- Brace initialization `{}` prevents narrowing conversions and avoids the "most vexing parse."
+- Direct initialization `()` allows narrowing conversions but can be ambiguous in declarations.
+- Brace initialization provides uniform syntax for all types and is preferred in modern C++.
+- Use brace initialization as default unless you specifically need direct initialization behavior.
+
+**Example:**
+```cpp
+int x{3.14};        // ERROR - prevents narrowing
+int y(3.14);        // OK but truncates to 3
+Widget w{};         // Clear object initialization
+Widget v();         // Function declaration (most vexing parse)
+```
+
+## emplace_back vs push_back
+
+- `emplace_back()` constructs objects directly in the container's memory using forwarded arguments.
+- `push_back()` constructs a temporary object and then copies/moves it into the container.
+- `emplace_back()` is more efficient for complex types as it avoids unnecessary copy/move operations.
+- For simple types, the performance difference is minimal.
+
+**Example:**
+```cpp
+std::vector<std::pair<int, string>> vec;
+vec.push_back({42, "hello"});           // Creates temporary pair, then moves
+vec.emplace_back(42, "hello");          // Constructs pair directly in vector
+```
+
+## Texture Units in OpenGL
+
+- OpenGL provides multiple texture units (GL_TEXTURE0, GL_TEXTURE1, etc.) for binding multiple textures simultaneously.
+- `glActiveTexture(GL_TEXTURE0 + unit)` selects which texture unit subsequent operations affect.
+- Shader uniforms of type `sampler2D` hold integer values indicating which texture unit to sample from.
+- The connection is: bind texture to unit → set uniform to unit number → shader samples from that unit.
+
+**Example:**
+```cpp
+glActiveTexture(GL_TEXTURE0);               // Select unit 0
+glBindTexture(GL_TEXTURE_2D, textureID);    // Bind texture to unit 0
+glUniform1i(uniformLocation, 0);            // Tell shader to use unit 0
+```
+
+## Builder Pattern
+
+- A creational design pattern that constructs complex objects step by step.
+- Separates object construction from its representation, allowing the same construction process to create different representations.
+- Useful when objects require many optional parameters or complex initialization.
+- Often implemented with method chaining for fluent interfaces.
+
+**Example:**
+```cpp
+Mesh mesh{vertices, indices, count};
+mesh.addPositionAttributes();      // Configure step by step
+mesh.addColorAttributes();         // Rather than complex constructor
+```
