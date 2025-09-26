@@ -6,9 +6,11 @@
 Shader files or other resources not loading, file not found errors.
 
 **Cause:**  
-Relative paths are resolved from the working directory, which may be the build directory (e.g., `cmake-build-debug`), not the project root.
+Relative paths are resolved from the working directory, which may be the build directory (e.g., `cmake-build-debug`),
+not the project root.
 
 **How to Avoid:**
+
 - Use CMake to copy resources (e.g., `file(COPY ...)`) to the build directory.
 - Always check your run configuration’s working directory.
 - Use absolute paths for critical resources if needed.
@@ -24,6 +26,7 @@ Relative paths are resolved from the working directory, which may be the build d
 Calling OpenGL functions (e.g., creating shaders) before initializing the OpenGL context.
 
 **How to Avoid:**
+
 - Only create OpenGL resources after `glfwInit()`, `glfwCreateWindow()`, and `glfwMakeContextCurrent()`.
 
 ---
@@ -37,6 +40,7 @@ Memory/resource leaks, warnings on exit.
 Not deleting OpenGL resources (shaders, programs, buffers).
 
 **How to Avoid:**
+
 - Implement destructors for resource-managing classes.
 - Use RAII patterns in C++.
 
@@ -51,6 +55,7 @@ Silent failures, hard-to-debug issues.
 Not checking return values or error logs.
 
 **How to Avoid:**
+
 - Always check and log shader compilation/linking status.
 - Use exceptions or error codes for file I/O.
 

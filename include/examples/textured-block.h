@@ -8,7 +8,7 @@
 
 #pragma once
 #include "example.h"
-#include "mesh.h"
+#include "simple-mesh.h"
 #include "shader.h"
 #include "texture.h"
 #include "glad/glad.h"
@@ -43,7 +43,7 @@ private:
         1, 2, 3    // second triangle
     };
 
-    Mesh squareMesh{vertices, indices, std::size(vertices), std::size(indices)};
+    SimpleMesh squareMesh{vertices, indices, std::size(vertices), std::size(indices)};
     Texture containerTexture{"resources/textures/container.jpg"};
     Texture awesomeFaceTexture{"resources/textures/awesome-face.png", {.flipVertically = true}};
 

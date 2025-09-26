@@ -36,3 +36,6 @@ compile_commands.json
 
 # Ignore shader binaries (if any)
 *.spv
+
+# Game resources
+resources/objects/*

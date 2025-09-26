@@ -79,6 +79,11 @@ public:
     void setVec3(const char *name, float x, float y, float z) const;
 
     /**
+     * @brief Set vec3 uniform with GLM vec 3
+     */
+    void setVec3(const char* name, glm::vec3 vec) const;
+
+    /**
      * @brief Set vec4 uniform.
      */
     void setVec4(const char *name, float x, float y, float z, float w) const;
@@ -219,6 +224,15 @@ inline void Shader::setVec3(const char *name, const float x, const float y, cons
         return;
     }
     glUniform3f(uniformLocation, x, y, z);
+}
+
+inline void Shader::setVec3(const char* name, const glm::vec3 vec) const {
+    const int uniformLocation = glGetUniformLocation(shaderProgram, name);
+    if (uniformLocation == -1) {
+        std::cerr << "ERROR::SHADER::UNIFORM_NOT_FOUND: " << name << std::endl;
+        return;
+    }
+    glUniform3f(uniformLocation, vec.x, vec.y, vec.z);
 }
 
 inline void Shader::setVec4(const char *name, const float x, const float y,

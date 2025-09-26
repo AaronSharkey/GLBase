@@ -39,6 +39,10 @@ public:
         return *this;
     }
 
+    [[nodiscard]] glm::vec3 getPosition() const {
+        return position;
+    }
+
     /**
      * @brief Sets rotation component for method chaining.
      * @param rot Rotation angles in radians (x, y, z axes)
