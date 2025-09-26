@@ -8,7 +8,7 @@
 
 #pragma once
 #include "example.h"
-#include "mesh.h"
+#include "simple-mesh.h"
 #include "shader.h"
 #include "texture.h"
 #include "mesh-generator.h"
@@ -95,8 +95,8 @@ private:
         -0.5f, 0.5f, -0.5f, 0.0f, 1.0f // back-left (repeated)
     };
 
-    Mesh cubeMesh{vertices, std::size(vertices), 36};
-    Mesh planeMesh = MeshGenerator::generatePlaneMesh(100, 1.0f, -0.75f, true);
+    SimpleMesh cubeMesh{vertices, std::size(vertices), 36};
+    SimpleMesh planeMesh = MeshGenerator::generatePlaneMesh(100, 1.0f, -0.75f, true);
 
     Texture containerTexture{"resources/textures/container.jpg"};
     Texture awesomeFaceTexture{"resources/textures/awesome-face.png", {.flipVertically = true}};

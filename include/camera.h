@@ -21,6 +21,14 @@ class Camera {
 public:
     virtual ~Camera() = default;
 
+    [[nodiscard]] glm::vec3 getCameraPosition() const {
+        return cameraPos;
+    }
+
+    [[nodiscard]] glm::vec3 getCameraFront() const {
+        return cameraFront;
+    }
+
     /**
      * @brief Generate view matrix for world-to-camera transform.
      * @return View matrix using lookAt
@@ -44,6 +52,10 @@ public:
      * @note Processes WASD, mouse look, and scroll FOV
      */
     virtual void updateCameraPositions(const float deltaTime) {
+        if (InputHandler::getModeState("debug-mode")) {
+            return;
+        }
+
         const float cameraSpeed = 2.5f * deltaTime;
 
         // WASD movement

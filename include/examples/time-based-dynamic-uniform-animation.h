@@ -8,7 +8,7 @@
 
 #pragma once
 #include "example.h"
-#include "mesh.h"
+#include "simple-mesh.h"
 #include "shader.h"
 #include <GLFW/glfw3.h>
 
@@ -38,7 +38,7 @@ private:
 
     const GLuint indices[3] = {0, 1, 2}; ///< Triangle indices (CCW winding)
 
-    Mesh triangleMesh{vertices, indices, std::size(vertices), std::size(indices)};
+    SimpleMesh triangleMesh{vertices, indices, std::size(vertices), std::size(indices)};
     Shader timeAnimationShader{
         "shaders/examples/time-based-dynamic-uniform-animation/time-based-dynamic-uniform-animation.vert",
         "shaders/examples/time-based-dynamic-uniform-animation/time-based-dynamic-uniform-animation.frag"

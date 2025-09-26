@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "mesh.h"
+#include "simple-mesh.h"
 
 /**
  * @class MeshGenerator
@@ -24,18 +24,21 @@ public:
      * @param wireframe Enable wireframe rendering
      * @return Indexed mesh with position-only vertices
      */
-    static Mesh generatePlaneMesh(int gridSize = 20, float gridSpacing = 1.0f, float height = 0.0f,
-                                  bool wireframe = false);
+    static SimpleMesh generatePlaneMesh(int gridSize = 20, float gridSpacing = 1.0f, float height = 0.0f,
+                                  bool wireframe = false, bool normals = false);
 };
 
-inline Mesh MeshGenerator::generatePlaneMesh(const int gridSize, const float gridSpacing, const float height,
-                                             const bool wireframe) {
+inline SimpleMesh MeshGenerator::generatePlaneMesh(const int gridSize, const float gridSpacing, const float height,
+                                             const bool wireframe, const bool normals) {
     const int vertexCount = (gridSize + 1) * (gridSize + 1);
     int vertexIndex = 0;
     int indexIndex = 0;
 
-    // Vertex data: x, y, z per vertex
-    GLfloat vertices[vertexCount * 3];
+    // Vertex data: x, y, z per vertex | normals are added additionally
+    int datasize = 3;
+    if (normals) { datasize += 3; };
+
+    GLfloat vertices[vertexCount * datasize];
 
     // Index data: 2 triangles per grid square
     GLuint indices[gridSize * gridSize * 2 * 3];
@@ -53,6 +56,13 @@ inline Mesh MeshGenerator::generatePlaneMesh(const int gridSize, const float gri
             vertices[vertexIndex++] = x;
             vertices[vertexIndex++] = y;
             vertices[vertexIndex++] = z;
+
+            if (normals) {
+                vertices[vertexIndex++] = 0.0f;
+                vertices[vertexIndex++] = 1.0f;
+                vertices[vertexIndex++] = 0.0f;
+            }
+
         }
     }
 
@@ -77,8 +87,8 @@ inline Mesh MeshGenerator::generatePlaneMesh(const int gridSize, const float gri
         }
     }
 
-    const size_t vertexArraySize = vertexCount * 3;
+    const size_t vertexArraySize = vertexCount * datasize;
     const size_t indexArraySize = gridSize * gridSize * 2 * 3;
 
-    return Mesh(vertices, indices, vertexArraySize, indexArraySize, wireframe);
+    return SimpleMesh(vertices, indices, vertexArraySize, indexArraySize, wireframe);
 }

@@ -72,6 +72,22 @@ if (APPLE)
 endif()
 
 # -----------------------------------------------------------------------------
+# 0.7. Assimp Setup
+# -----------------------------------------------------------------------------
+
+# Configure Assimp build options before fetching
+set(ASSIMP_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(ASSIMP_BUILD_ASSIMP_TOOLS OFF CACHE BOOL "" FORCE)
+
+FetchContent_Declare(
+        assimp
+        GIT_REPOSITORY https://github.com/assimp/assimp.git
+        GIT_TAG v5.4.3 # Latest stable
+)
+
+FetchContent_MakeAvailable(assimp)
+
+# -----------------------------------------------------------------------------
 # 1. GLAD: OpenGL Function Loader (Built as Static Library)
 # -----------------------------------------------------------------------------
 
@@ -176,6 +192,7 @@ target_link_libraries(${PROJECT_NAME}
         glad
         glfw
         imgui          # Added ImGui support
+        assimp         # Added Assimp support
         ${CMAKE_DL_LIBS}  # Needed for dynamic linking (e.g., on Linux)
 )
 
@@ -223,6 +240,7 @@ if(TEST_SOURCES)
             glad
             glfw
             imgui          # Added ImGui support for tests
+            assimp         # Added Assimp support for tests
             ${CMAKE_DL_LIBS}
     )
 

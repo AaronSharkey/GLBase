@@ -12,9 +12,15 @@
 #include "window.h"
 #include "input.h"
 #include "gui/imgui-manager.h"
+#include "examples/basic-lighting.h"
 #include "examples/spinning-block.h"
 #include "examples/textured-block.h"
 #include "examples/camera-with-movement.h"
+#include "examples/light-casters.h"
+#include "examples/lighting-maps.h"
+#include "examples/materials.h"
+#include "examples/model-loading.h"
+#include "examples/multiple-lights.h"
 #include "examples/three-dimensional-projection.h"
 #include "examples/time-based-dynamic-uniform-animation.h"
 
@@ -33,24 +39,36 @@ int main() {
     SpinningBlock spinningBlockExample;
     ThreeDimensionalProjection threeDimensionalProjectionExample;
     CameraWithMovement cameraExample;
+    BasicLighting basicLightingExample;
+    MaterialExample materialExample;
+    LightingMapsExample lightingMapsExample;
+    LightCastersExample lightCastersExample;
+    MultipleLightsExample multipleLightsExample;
+    ModelLoadingExample modelLoadingExample;
 
     // Map example names to instances for selection
-    std::map<std::string, Example *> examples = {
+    std::map<std::string, Example*> examples = {
         {"basic", &basicExample},
         {"textured-block", &texturedBlockExample},
         {"spinning-block", &spinningBlockExample},
         {"three-dimension-projection", &threeDimensionalProjectionExample},
-        {"camera-with-movement", &cameraExample}
+        {"camera-with-movement", &cameraExample},
+        {"basic-lighting", &basicLightingExample},
+        {"materials", &materialExample},
+        {"lighting-maps", &lightingMapsExample},
+        {"light-casters", &lightCastersExample},
+        {"multiple-lights", &multipleLightsExample},
+        {"model-loading", &modelLoadingExample}
     };
 
     // Extract example names for UI dropdown
     std::vector<std::string> exampleNames;
     exampleNames.reserve(examples.size());
-    for (const auto &key: examples | std::views::keys) {
+    for (const auto& key : examples | std::views::keys) {
         exampleNames.push_back(key);
     }
 
-    GLFWwindow *window = basicWindow.getWindow();
+    GLFWwindow* window = basicWindow.getWindow();
     ImGuiManager guiManager(window);
 
     InputHandler::setScrollCallBack(window, &InputHandler::scrollCallback);
@@ -59,7 +77,6 @@ int main() {
     // Main Render Loop
     // -------------------------------------------------------------------------
     while (!basicWindow.getShouldClose()) {
-
         InputHandler::processInput(window);
 
         // Exit on escape key
