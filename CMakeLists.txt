@@ -88,6 +88,26 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(assimp)
 
 # -----------------------------------------------------------------------------
+# 0.8. Jolt Physics Setup
+# -----------------------------------------------------------------------------
+
+# Set Jolt build options before fetching
+set(TARGET_HELLO_WORLD ON CACHE BOOL "" FORCE)
+set(TARGET_UNIT_TESTS OFF CACHE BOOL "" FORCE)
+set(TARGET_PERFORMANCE_TEST OFF CACHE BOOL "" FORCE)
+set(TARGET_SAMPLES OFF CACHE BOOL "" FORCE)
+set(TARGET_VIEWER OFF CACHE BOOL "" FORCE)
+
+FetchContent_Declare(
+        JoltPhysics
+        GIT_REPOSITORY https://github.com/jrouwe/JoltPhysics.git
+        GIT_TAG v5.2.0
+        SOURCE_SUBDIR Build  # Tell CMake that CMakeLists.txt is in Build/ subdirectory
+)
+
+FetchContent_MakeAvailable(JoltPhysics)
+
+# -----------------------------------------------------------------------------
 # 1. GLAD: OpenGL Function Loader (Built as Static Library)
 # -----------------------------------------------------------------------------
 
@@ -137,6 +157,7 @@ add_executable(${PROJECT_NAME} ${APP_SOURCES})
 target_include_directories(${PROJECT_NAME} PRIVATE
         ${CMAKE_SOURCE_DIR}/include
         ${CMAKE_SOURCE_DIR}/libs/stb_image
+        ${joltphysics_SOURCE_DIR}/..  # Go up one level from Build to get Jolt root
 )
 
 # -----------------------------------------------------------------------------
@@ -193,7 +214,15 @@ target_link_libraries(${PROJECT_NAME}
         glfw
         imgui          # Added ImGui support
         assimp         # Added Assimp support
+        Jolt           # Jolt Physics (not JoltPhysics)
         ${CMAKE_DL_LIBS}  # Needed for dynamic linking (e.g., on Linux)
+)
+
+# Jolt Physics preprocessor definitions (optional, for debug features)
+target_compile_definitions(${PROJECT_NAME} PRIVATE
+        JPH_OBJECT_STREAM
+        JPH_PROFILE_ENABLED
+        JPH_DEBUG_RENDERER
 )
 
 # -----------------------------------------------------------------------------
@@ -231,6 +260,7 @@ if(TEST_SOURCES)
     target_include_directories(GLBase_tests PRIVATE
             ${CMAKE_SOURCE_DIR}/include
             ${CMAKE_SOURCE_DIR}/libs/stb_image
+            ${joltphysics_SOURCE_DIR}/..  # Add Jolt headers for tests
     )
 
     target_link_libraries(
@@ -241,6 +271,7 @@ if(TEST_SOURCES)
             glfw
             imgui          # Added ImGui support for tests
             assimp         # Added Assimp support for tests
+            Jolt           # Jolt Physics for tests (not JoltPhysics)
             ${CMAKE_DL_LIBS}
     )
 
